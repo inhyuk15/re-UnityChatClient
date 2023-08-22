@@ -7,6 +7,9 @@ public class ChatManager : MonoBehaviour
     public static ChatManager Instance { get; private set; }
     private ChatClient chatClient;
 
+    [SerializeField]
+    private ChatScrollViewController scrollViewController;
+
     void Awake()
     {
         if (Instance == null)
@@ -23,6 +26,7 @@ public class ChatManager : MonoBehaviour
     void Start()
     {
         Init();
+        ReadData();
     }
 
     private void Init()
@@ -34,9 +38,21 @@ public class ChatManager : MonoBehaviour
         chatClient.Connect(host, port);
     }
 
-    public void SendMessage(string message) {
-        if (!string.IsNullOrEmpty(message)) {
+    public void SendMessage(string message)
+    {
+        if (!string.IsNullOrEmpty(message))
+        {
             chatClient.SendMessage(message);
         }
+    }
+
+    private void ReadData()
+    {
+        StartCoroutine(chatClient.Read(OnReceived));
+    }
+
+    private void OnReceived(string message)
+    {
+        scrollViewController.AddMessage(message);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Net.Sockets;
+using UnityEngine;
 
 public class TcpChatClient : ChatClient
 {
@@ -19,7 +20,16 @@ public class TcpChatClient : ChatClient
         reader = new StreamReader(stream);
     }
 
-    public override void Read() { }
+    public override IEnumerator Read(Action<string> onReceived)
+    {
+        while (tcpClient.Connected)
+        {
+            yield return new WaitUntil(() => tcpClient.GetStream().DataAvailable);
+            var data = reader.ReadLine();
+
+            onReceived?.Invoke(data);
+        }
+    }
 
     public override void SendMessage(string message)
     {
