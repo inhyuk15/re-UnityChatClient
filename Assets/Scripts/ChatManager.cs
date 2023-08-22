@@ -33,4 +33,10 @@ public class ChatManager : MonoBehaviour
         chatClient = new TcpChatClient();
         chatClient.Connect(host, port);
     }
+
+    public void SendMessage(string message) {
+        if (!string.IsNullOrEmpty(message)) {
+            chatClient.SendMessage(message);
+        }
+    }
 }

@@ -21,7 +21,13 @@ public class TcpChatClient : ChatClient
 
     public override void Read() { }
 
-    public override void SendMessage(string message) { }
+    public override void SendMessage(string message)
+    {
+        if (!string.IsNullOrEmpty(message))
+        {
+            writer.WriteLine(message);
+        }
+    }
 
     public override void Close() { }
 }
