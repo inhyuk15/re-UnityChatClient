@@ -39,5 +39,15 @@ public class TcpChatClient : ChatClient
         }
     }
 
-    public override void Close() { }
+    public override void Close()
+    {
+        reader.Close();
+        writer.Close();
+        tcpClient.Close();
+    }
+
+    public override void Dispose()
+    {
+        Close();
+    }
 }

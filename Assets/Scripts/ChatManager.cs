@@ -55,4 +55,14 @@ public class ChatManager : MonoBehaviour
     {
         scrollViewController.AddMessage(message);
     }
+
+    private void Close()
+    {
+        chatClient?.Close();
+    }
+
+    private void OnDestroy()
+    {
+        Close();
+    }
 }
